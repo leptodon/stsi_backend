@@ -1,49 +1,45 @@
 package icu.stsi.backend.controller;
 
 import icu.stsi.backend.domain.Point;
-import icu.stsi.backend.repository.PointRepository;
+import icu.stsi.backend.service.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 //todo: доработать
 @Controller
 public class PointController {
 
     @Autowired
-    private PointRepository pointRepository;
+    private PointService pointService;
 
     @PostMapping(path="/add")
-    public @ResponseBody String put(@RequestParam Point point) {
-        Point newPoint = new Point();
-        newPoint.setDescription(point.getDescription());
-        newPoint.setLatitude(point.getLatitude());
-        newPoint.setLongitude(point.getLongitude());
-        newPoint.setPointType(point.getPointType());
-        newPoint.setCreateTime(new Date());
-        pointRepository.save(newPoint);
+    public @ResponseBody String put(@ModelAttribute Point point) {
+        pointService.save(point);
         return "Saved";
     }
 
     @GetMapping(path="/all")
-    public @ResponseBody Iterable<Point> getAll() {
-        return pointRepository.findAll();
+    public @ResponseBody List<Point> getAll() {
+        return pointService.getAll();
     }
 
-    @GetMapping(path="/get")
-    public @ResponseBody Optional<Point> get(@RequestParam Long id) {
-        return pointRepository.findById(id);
+    @GetMapping(path="/{id}")
+    public @ResponseBody Point get(@PathVariable Long id) {
+        return pointService.get(id);
     }
 
-    @PostMapping(path="/delete")
-    public @ResponseBody String delete(@RequestParam Long id) {
-        pointRepository.deleteById(id);
+    @DeleteMapping(path="/{id}")
+    public @ResponseBody String delete(@PathVariable Long id) {
+        pointService.delete(id);
         return "Delete";
+    }
+
+    @PostMapping(path="/update")
+    public @ResponseBody String update(@ModelAttribute Point point) {
+        pointService.update(point);
+        return "Update";
     }
 }
