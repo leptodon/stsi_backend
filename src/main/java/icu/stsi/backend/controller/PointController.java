@@ -3,6 +3,7 @@ package icu.stsi.backend.controller;
 import icu.stsi.backend.domain.Point;
 import icu.stsi.backend.service.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,8 @@ public class PointController {
     @Autowired
     private PointService pointService;
 
-    @PostMapping(path="/add")
-    public @ResponseBody String put(@ModelAttribute Point point) {
+    @PostMapping(path="/add", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String put(@RequestBody Point point) {
         pointService.save(point);
         return "Saved";
     }
@@ -37,8 +38,8 @@ public class PointController {
         return "Delete";
     }
 
-    @PostMapping(path="/update")
-    public @ResponseBody String update(@ModelAttribute Point point) {
+    @PostMapping(path="/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String update(@RequestBody Point point) {
         pointService.update(point);
         return "Update";
     }

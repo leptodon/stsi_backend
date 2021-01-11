@@ -1,15 +1,13 @@
 package icu.stsi.backend.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Точка на карте
  */
 @Entity
+@Table(name = "points")
 public class Point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +19,7 @@ public class Point {
 
     private Double longitude;
 
+    @Enumerated(EnumType.ORDINAL)
     private PointType pointType;
 
     private Date createTime;
